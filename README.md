@@ -9,8 +9,9 @@ in clean_measurements.csv and clean_stations.csv.
 ### Step 2 Database Engineering (file database_engineering.ipynb).
 
 With the function  read_base_file,  I read the files clean_measurements.csv and clean_stations.csv in a given directory. The default directory is Resources/
-'''
+
 def read_base_file(data_folder, base_file):
+'''
     file_csv = os.path.join(data_folder,base_file)
     try:
         df = pd.read_csv(file_csv)
@@ -27,7 +28,8 @@ I create an engine to a SQLite database file called `hawaii.sqlite` and use `cre
 ### Step 3 - Climate Analysis and Exploration (file climate_analysis.ipynb)
 
 I define the lenght of the trip for 12 days. I look for the last date of the data and find the date one year ago using the function 
-get_start_date(end_date,t_move).
+
+df get_start_date(end_date,t_move):
 
 '''
 qry = session.query(func.max(Measurements.date).label("last_date"))
@@ -52,7 +54,7 @@ def get_start_date(end_date,t_move):
 
 #### Precipitation Analysis
 
-I design a query to retrieve the last 12 months of precipitation data and select only the date and prcp values.
+I design a query to retrieve the last 12 months of precipitation data and select only the date and prcp values:
 
 '''
 prcp_year_df = pd.read_sql(session.query(Measurements.date,Measurements.prcp).\
