@@ -71,3 +71,44 @@ class Stations(Base):
     longitude = Column(Float)
     elevation = Column(Float)
 ```
+
+![png](climate_analysis_files/climate_analysis_22_0.png)
+
+#### Temperature Analysis
+
+1) Use a function called calc_temps that will accept a start date and end date in the format %Y-%m-%d and return the minimum, average, and maximum temperatures for that range of dates.
+
+
+```python
+def calc_temps(start_date, end_date):
+    
+    sel = [ func.min(Measurements.tobs), func.max(Measurements.tobs), func.avg(Measurements.tobs),
+       (func.max(Measurements.tobs) - func.min(Measurements.tobs))]
+           
+    stmt = session.query(*sel).filter(Measurements.date.between(start_date, end_date)).first()
+                  
+    return(stmt)
+```
+
+2) Use the calc_temps function to calculate the min, avg, and max temperatures for your trip using the matching dates from the previous year (i.e. use "2017-01-01" if your trip start date was "2018-01-01")
+
+```python
+# Find the matching days from the previous years.
+
+end_date = year_ago_date
+start_date = get_start_date(end_date, 'N')
+
+temp_analysis = calc_temps(start_date,end_date)
+
+temps = list(np.ravel(temp_analysis))
+temps
+```
+
+3) Plot the min, avg, and max temperature from your previous query as a bar chart.
+
+    * Use the average temperature as the bar height.
+    * Use the peak-to-peak (tmax-tmin) value as the y error bar (yerr).
+
+![png](climate_analysis_files/climate_analysis_26_0.png)
+
+#### Step 4 Flask Analysis (file flask_analysis.ipynb).
