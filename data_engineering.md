@@ -22,6 +22,52 @@ import pandas as pd
 
 clean_measurements_df = measurements_df.interpolate(method='linear', axis=0).ffill().bfill()
 print(f"Totals of missing data in clean_measurements :\n{clean_measurements_df.count()} ")
+```
 
-clean_measurements_df.head()
+### Step 2 Database Engineering (file database_engineering.ipynb).
+
+With the function  read_base_file,  I read the files clean_measurements.csv and clean_stations.csv in a given directory. The default directory is Resources/
+
+The dependencies use in database_engineering.ipynb file are:
+
+```python
+import os
+import pandas as pd
+
+# Python SQL toolkit and Object Relational Mapper
+import sqlalchemy
+#from sqlalchemy import create_engine
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import ( Column, 
+                         Integer, 
+                         String, 
+                         DateTime, 
+                         Float
+)
+```
+
+
+```python
+# Use `declarative_base` from SQLAlchemy to model the measurement table
+# an station table as an ORM classes
+
+Base = declarative_base()
+
+class Measurements(Base):
+    __tablename__ = 'measurement'
+    id = Column(Integer, primary_key=True)
+    station = Column(String)
+    date = Column(String)
+    prcp = Column(Float)
+    tobs = Column(Integer)
+    
+class Stations(Base):
+    __tablename__ = 'station'
+    id = Column(Integer, primary_key=True)
+    station = Column(String)
+    name = Column(String(255))
+    latitude = Column(Float)
+    longitude = Column(Float)
+    elevation = Column(Float)
 ```
