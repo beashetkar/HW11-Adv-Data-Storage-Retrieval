@@ -80,16 +80,16 @@ def welcome():
         f"/api/v1.0/precipitation - List of Precipitation<br/>"
 
         f"/api/v1.0/stations"
-        f"- List of Stations<br/>"
+        f" - List of Stations<br/>"
 
         f"/api/v1.0/tobs"
-        f"- List of Temperatures Observations of Previous Year<br/>"
+        f" - List of Temperatures Observations of Previous Year<br/>"
 
-        f"/api/v1.0/<start_date>"
-        f"- List of the Min,  the Max and the Avg temperature  for all dates greater greater than or equal to the start date<br/>"
+        f"/api/v1.0/&ltstart&gt" 
+        f" - List of the Min,  the Max and the Avg temperature  for all dates >= to given start date <br/>"
 
-        f"/api/v1.0/<start_date>/<end_date>"
-        f"- List of the Min,  the Max and the Avg temperature  for all dates between the start date and end date<br/>"
+        f"/api/v1.0/&ltstart&gt&ltend&gt"
+        f" - List of the Min,  the Max and the Avg temperature  for all dates between the start and end dates<br/>"
     )
    
 # Route /api/v1.0/precipitation
@@ -153,13 +153,13 @@ def tobs():
 # Return a json list of the minimum temperature, the average temperature, and the max temperature  
 # for all dates greater than and equal to the start date.
 
-@app.route("/api/v1.0/<start_date>")
-def temp_range_start(start_date):
+@app.route("/api/v1.0/<start>")
+def temp_range_start(start='2017-01-01'):
     
     res_temps = session.query(func.min(Measurements.tobs).label("temp_min"),\
                              func.avg(Measurements.tobs).label("temp_avg"),\
                              func.max(Measurements.tobs).label("temp_max")).\
-                             filter(Measurements.date >= start_date).first()
+                             filter(Measurements.date >= start).first()
 
     temps_data = list(np.ravel(res_temps))            
     return jsonify(temps_data)
@@ -168,13 +168,13 @@ def temp_range_start(start_date):
 # Return a json list of the minimum temperature, the average temperature, and the max temperature  
 # for all dates between the start date and end date.
 
-@app.route("/api/v1.0/<start_date>/<end_date>")
-def temp_start_end(start_date,end_date):
+@app.route("/api/v1.0/<start>/<end>")
+def temp_start_end(start='2016-04-01' ,end='2016-08-31' ):
     
     res_temps = session.query(func.min(Measurements.tobs).label("temp_min"),\
                              func.avg(Measurements.tobs).label("temp_avg"),\
                              func.max(Measurements.tobs).label("temp_max")).\
-                             filter(Measurements.date.between(start_date, end_date)).first()
+                             filter(Measurements.date.between(start,end)).first()
         
     temps_data = list(np.ravel(res_temps))
     return jsonify(temps_data)
