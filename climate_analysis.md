@@ -315,11 +315,11 @@ plt.show()
     * Filter by the station with the highest number of observations.
     * Plot the results as a histogram with bins=12
 
-
 ```python
 # Total number of stations
 total_num_stations = session.query(Stations.station).count()
 print(f"Total number  of stations : {total_num_stations} ")
+
 
 # The most Active stations.
 top_stations = session.query(Measurements.station, Stations.name, func.count(Measurements.tobs)).\
