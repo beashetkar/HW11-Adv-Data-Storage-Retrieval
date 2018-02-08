@@ -223,8 +223,8 @@ stations_df.head()
 </table>
 </div>
 
-
-
+Then I Use `declarative_base` from SQLAlchemy to model the measurement table an station table as an ORM classes. Finally, 
+I create an engine to a SQLite database file called `hawaii.sqlite` and use `create_all` to create the measurement and station tables in the database.
 
 ```python
 # Use `declarative_base` from SQLAlchemy to model the measurement table
